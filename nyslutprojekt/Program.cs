@@ -11,6 +11,7 @@ namespace nyslutprojekt
         static void Main(string[] args)
         {
             Restaurangbokning bokningssytem = new Restaurangbokning();
+            Console.Clear();
             bokningssytem.Start();
         }
     }

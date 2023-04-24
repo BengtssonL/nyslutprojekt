@@ -19,9 +19,41 @@ namespace nyslutprojekt
             numBookings = 0;
         }
 
-
-        static void Main(string[] args)
+        public void Start()
         {
+            Console.WriteLine("Välkommen till restaurangen!");
+            Console.WriteLine("--------------------------");
+
+            while (true)
+            {
+                Console.WriteLine("\nVad vill du göra?");
+                Console.WriteLine("1. Boka ett bord");
+                Console.WriteLine("2. Visa befintliga bokningar");
+                Console.WriteLine("3. Avsluta programmet");
+
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                      //  BookTable();
+                        break;
+
+                    case "2":
+                      //  ShowBookings();
+                        break;
+
+                    case "3":
+                        Console.WriteLine("Tack för besöket, välkommen åter!");
+                        return;
+
+                    default:
+                        Console.WriteLine("Ogiltigt val, försök igen.");
+                        break;
+                }
+
+            }
         }
+       
     }
 }

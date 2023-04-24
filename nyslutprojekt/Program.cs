@@ -36,11 +36,11 @@ namespace nyslutprojekt
                 switch (choice)
                 {
                     case "1":
-                      //  BookTable();
+                        BookTable();
                         break;
 
                     case "2":
-                      //  ShowBookings();
+                        ShowBookings();
                         break;
 
                     case "3":
@@ -54,6 +54,37 @@ namespace nyslutprojekt
 
             }
         }
-       
+        private void BookTable()
+        {
+            Console.Write("Ange ditt namn: ");
+            string name = Console.ReadLine();
+            Console.Write("Ange antal gäster: ");
+            int party = int.Parse(Console.ReadLine());
+
+            bool foundTable = false;
+            int tableIndex = 0;
+
+            for (int i = 0; i < tables.GetLength(0); i++)
+            {
+                if (party <= tables[i, 1])
+                {
+                    tableIndex = i;
+                    foundTable = true;
+                    break;
+                }
+            }
+            if (!foundTable)
+            {
+                Console.WriteLine("Tyvärr finns det inga lediga bord som rymmer det antal gäster du angav.");
+            }
+            else
+            {
+
+            }
+        }
+        private void ShowBookings()
+        {
+
+        }
     }
 }

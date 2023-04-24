@@ -37,10 +37,12 @@ namespace nyslutprojekt
                 switch (val)
                 {
                     case "1":
+                        Console.Clear();
                         BookTable();
                         break;
 
                     case "2":
+                        Console.Clear();
                         ShowBookings();
                         break;
 
@@ -60,7 +62,16 @@ namespace nyslutprojekt
             Console.Write("Ange ditt namn: ");
             string name = Console.ReadLine();
             Console.Write("Ange antal gäster: ");
-            int party = int.Parse(Console.ReadLine());
+            var partyasstring = Console.ReadLine();
+
+            int party;
+
+            while (!int.TryParse(partyasstring, out party))
+            {
+                Console.WriteLine("skriv ett nummer tack :)");
+                partyasstring = Console.ReadLine();
+            }
+            
 
             bool foundTable = false;
             int tableIndex = 0;
@@ -83,7 +94,6 @@ namespace nyslutprojekt
                 Console.WriteLine($"Det lediga bordet med nummer {tables[tableIndex, 0]} har bokats för {name} med {party} gäster.");
                 bookings[numBookings, 0] = tables[tableIndex, 0];
                 bookings[numBookings, 1] = party;
-                bookings[numBookings, 2] = DateTime.Now.DayOfYear;
                 numBookings++;
 
                 int[,] newTables = new int[tables.GetLength(0) - 1, 2];
@@ -98,13 +108,28 @@ namespace nyslutprojekt
                         j++;
                     }
                 }
-
                 tables = newTables;
             }
         }
+
         private void ShowBookings()
         {
+            if (numBookings == 0)
+            {
+                Console.WriteLine("Det finns inga bokningar just nu.");
+            }
+            else
+            {
+                Console.WriteLine("Befintliga bokningar:");
+                Console.WriteLine("---------------------");
 
+                for (int i = 0; i < numBookings; i++)
+                {
+                    Console.WriteLine($"Bord {bookings[i, 0]} är bokat för {bookings[i, 1]} gäster.");
+                }
+
+
+            }
         }
     }
 }

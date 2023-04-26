@@ -27,6 +27,7 @@ namespace nyslutprojekt
 
             while (true)
             {
+                
                 Console.WriteLine("\nVad vill du göra?");
                 Console.WriteLine("1. Boka ett bord");
                 Console.WriteLine("2. Visa befintliga bokningar");
@@ -48,16 +49,18 @@ namespace nyslutprojekt
 
                     case "3":
                         Console.WriteLine("Tack för besöket, välkommen åter!");
+                        Console.ReadLine();
                         return;
 
                     default:
+                        Console.Clear();
                         Console.WriteLine("Ogiltigt val, försök igen.");
                         break;
                 }
 
             }
         }
-        private void BookTable()
+        public void BookTable()
         {
             Console.Write("Ange ditt namn: ");
             string name = Console.ReadLine();
@@ -112,7 +115,7 @@ namespace nyslutprojekt
             }
         }
 
-        private void ShowBookings()
+        public void ShowBookings()
         {
             if (numBookings == 0)
             {
@@ -127,8 +130,6 @@ namespace nyslutprojekt
                 {
                     Console.WriteLine($"Bord {bookings[i, 0]} är bokat för {bookings[i, 1]} gäster.");
                 }
-
-
             }
         }
     }

@@ -8,6 +8,15 @@ namespace nyslutprojekt
 {
     class Arbetare : User
     {
-        
+        public Arbetare () : base ()
+        {
+
+        }
+
+        public override void Start()
+        {
+            base.Start();
+        }
+
     }
 }

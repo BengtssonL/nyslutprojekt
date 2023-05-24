@@ -6,68 +6,35 @@ using System.Threading.Tasks;
 
 namespace nyslutprojekt
 {
-    class User
+    abstract class User
     {
-        //privata 2 dimensionella arrays för bookningar och bord. 
-        private int[,] tables;
-        private int[,] bookings;
-        private int numBookings;
+        protected Table[] tables;
+        private int[,] bookings; 
+        private int numBookings = 0;
 
-        //en constructor som skapar bord med platser och nummer samt en array för bokningar där 10 är max antal bokningar 
-        //och sedan sparar den bordsnummer och antal gäster
+        public User(Table[] tables, int[,] bookings, int numBookings)
+        {
+            this.tables = tables;
+            this.bookings = bookings;
+            this.numBookings = numBookings;
+            
+        }
+
         public User()
         {
-            tables = new int[,] { { 1, 2 }, { 2, 4 }, { 3, 4 }, { 4, 4 }, { 5, 4 }, { 6, 4 }, { 7, 6 }, { 8, 6 }, { 9, 8 }, { 10, 8 } };
-            bookings = new int[10, 2];
-            numBookings = 0;
+            // Startar tables arrayen som en tom array
+            this.tables = new Table[0]; 
+            // starta bookings arrayen som har plats för 10 bokningar
+            this.bookings = new int[10, 2]; 
+            this.numBookings = 0;
         }
 
         //virtuell metod som gör att den kan bli overriden i subclasserna. 
-        public virtual void Start()
-        {
-            Console.WriteLine("Välkommen till restaurangen!");
-            Console.WriteLine("--------------------------");
+        public abstract void Start(Table[] tables);
 
-            // skapar en loop
-            while (true)
-            {
-
-                Console.WriteLine("\nVad vill du göra?");
-                Console.WriteLine("1. Boka ett bord");
-                Console.WriteLine("2. Visa befintliga bokningar");
-                Console.WriteLine("3. Avsluta programmet");
-
-                string val = Console.ReadLine();
-
-                switch (val)
-                {
-                    case "1":
-                        Console.Clear();
-                        BookTable();
-                        break;
-
-                    case "2":
-                        Console.Clear();
-                        ShowBookings();
-                        break;
-
-                    case "3":
-                        Console.WriteLine("Tack för besöket, välkommen åter!");
-                        Console.ReadLine();
-                        return;
-
-
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Ogiltigt val, försök igen.");
-                        break;
-                }
-
-            }
-        }
 
         //metod för att boka bord. 
-        public void BookTable()
+        public void BookTable(Table[] tables)
         {
             //frågar om namn och antal gäster
             Console.Write("Ange ditt namn: ");
@@ -84,58 +51,56 @@ namespace nyslutprojekt
                 Console.WriteLine("skriv ett nummer tack :)");
                 partyasstring = Console.ReadLine();
             }
-            
+
 
             bool foundTable = false;
             int tableIndex = 0;
             //kollar ifall det finns ett bord för gruppen
-            for (int i = 0; i < tables.GetLength(0); i++)
+            for (int i = 0; i < tables.Length; i++)
             {
-                if (party <= tables[i, 1])
+                if (!tables[i].Isbooked && party <= tables[i].Size)
                 {
                     tableIndex = i;
                     foundTable = true;
                     break;
                 }
             }
-            //ifall det inte finns ett bord får man ett felmedelande
+            //ifall det inte finns ett bord får man det här meddelandet
             if (!foundTable)
             {
                 Console.WriteLine("Tyvärr finns det inga lediga bord som rymmer det antal gäster du angav.");
             }
-            
             else
             {
                 //här står det vilket bord man fått
-                Console.WriteLine($"Det lediga bordet med nummer {tables[tableIndex, 0]} har bokats för {name} med {party} gäster.");
+                Console.WriteLine($"Det lediga bordet med nummer {tables[tableIndex].TableNumber} har bokats för {name} med {party} gäster.");
                 //programmet sparar vilket bord och hur många man var.
-                bookings[numBookings, 0] = tables[tableIndex, 0];
+                bookings[numBookings, 0] = tables[tableIndex].TableNumber;
                 bookings[numBookings, 1] = party;
                 //lägger till en bokning i numBookings.
                 numBookings++;
 
-                //skapar en ny array som är ett nummer mindre än den tidigare. 
-                int[,] newTables = new int[tables.GetLength(0) - 1, 2];
-                int j = 0;
+                //tables.isbooked ändras till true
+                tables[tableIndex].Isbooked = true;
 
-                //kopierar in alla bord i den nya arrayen förutom det som nyss blivit bokat. 
-                for (int i = 0; i < tables.GetLength(0); i++)
+                //skapar en ny array som är ett nummer mindre än den tidigare. 
+                Table[] newTables = new Table[tables.Length - 1];
+                int j = 0;
+                for (int i = 0; i < tables.Length; i++)
                 {
                     if (i != tableIndex)
                     {
-                        newTables[j, 0] = tables[i, 0];
-                        newTables[j, 1] = tables[i, 1];
+                        newTables[j] = tables[i];
                         j++;
                     }
                 }
-                //sätter tables till newtables vilket gör att man inte kan boka bokade bord. 
                 tables = newTables;
             }
         }
         //metod för att se bokningar. 
         public void ShowBookings()
         {
-            //om numbookings är 0 får man felmedelande 
+            //om numbookings är 0 får man detta meddelandet
             if (numBookings == 0)
             {
                 Console.WriteLine("Det finns inga bokningar just nu.");
@@ -149,6 +114,7 @@ namespace nyslutprojekt
                 for (int i = 0; i < numBookings; i++)
                 {
                     Console.WriteLine($"Bord {bookings[i, 0]} är bokat för {bookings[i, 1]} gäster.");
+                    Console.WriteLine($"Det är {numBookings} antal bokningar");
                 }
             }
         }

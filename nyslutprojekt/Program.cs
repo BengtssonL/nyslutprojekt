@@ -10,15 +10,25 @@ namespace nyslutprojekt
     {
         static void Main(string[] args)
         {
-            //hade tänkt använda så att kund och arbetare kan få tillgång till varandras bokningar. 
-            List<string> bookings = new List<string>();
-
             //variabel för switchen
             int val;
-            User program = new User();
             Kund kund = new Kund();
-
             Arbetare arbetare = new Arbetare();
+            Table[] tables;
+
+            //lägger in bord i arrayen med storlek och bordsnummer och sparar det i tables variabeln.
+                tables = new Table[]
+                 {
+                    new Table(4,1),
+                    new Table(2, 2),
+                    new Table(3, 3),
+                    new Table(4, 4),
+                    new Table(2, 5),
+                    new Table(3, 6),
+                    new Table(7, 7)
+                };
+
+
 
             while (true)
             {
@@ -26,6 +36,7 @@ namespace nyslutprojekt
                 Console.WriteLine("Är du en kund eller arbetare?");
                 Console.WriteLine("1. Kund");
                 Console.WriteLine("2. Arbetare");
+                Console.WriteLine("3. om du vill lämna");
 
                 val = int.Parse(Console.ReadLine());
 
@@ -35,14 +46,17 @@ namespace nyslutprojekt
                     case 1:
                         //kallar på kundens start
                         Console.Clear();
-                        kund.Start();
+                        kund.Start(tables);
                         break;
 
                     case 2:
                         //kallar på arbetarens start som är samma som user. 
                         Console.Clear();
-                        arbetare.Start();
+                        arbetare.Start(tables);
                         break;
+
+                    case 3:
+                        return;
 
                     default:
                         Console.WriteLine("Ogiltigt val, försök igen.");

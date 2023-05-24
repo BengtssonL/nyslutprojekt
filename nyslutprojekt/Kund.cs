@@ -8,15 +8,18 @@ namespace nyslutprojekt
 {
     class Kund : User
     {
+        private string name { get; set; }
+        private int id { get; set; }
+        
         //constructor
         public Kund() : base()
         {
-
         }
-        //overridar start så att den får bara har boka bort och gå tillbaka till första menyn 
-        public override void Start()
+        
+        //overridar start så att den får bara har boka bord och gå tillbaka till första menyn 
+        public override void Start(Table[] tables)
         {
-            //loopar tills man välher case 2 att gå tillbaka till menyn
+            //loopar tills man väljer case 2 att gå tillbaka till menyn
             while (true)
             {
 
@@ -31,7 +34,7 @@ namespace nyslutprojekt
                 {
                     case 1:
                         Console.Clear();
-                        BookTable();
+                        BookTable(tables);
                         break;
 
                     case 2:
